@@ -17,7 +17,8 @@ def recognize_speech_from_mic(recognizer, microphone):
 
     # try recognizing the speech in the recording
     try:
-        text = recognizer.recognize_google(audio)
+        # text = recognizer.recognize_google(audio)
+        text = recognizer.recognize_bing(audio)
     except Exception as e:
         print(e)
         text = None
@@ -31,7 +32,16 @@ if __name__ == '__main__':
 
     # create recognizer and mic instances
     recognizer = sr.Recognizer()
-    microphone = sr.Microphone()
+    # microphone = sr.Microphone()
+    # By:
+    """
+    python -c "import speech_recognition as sr
+
+    for i, name in enumerate(sr.Microphone.list_microphone_names()):
+    print(i, name)"
+    """
+    # find mic index
+    microphone = sr.Microphone(device_index=8)
 
     # get your speech text
     speech_text = recognize_speech_from_mic(recognizer, microphone)

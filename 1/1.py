@@ -23,6 +23,7 @@ if __name__ == '__main__':
     questions = []
     # while seconds is less than 60
     while time.time() - start_time <= 60:
+        # Create numbers for: a option b = c
         a = random.randint(1, 99)
         op = random.choice(ops)
         if op == '/':
@@ -32,7 +33,7 @@ if __name__ == '__main__':
             b = random.randint(1, 99)
         # Get the correct answer
         a_op_b = '{}{}{}'.format(a, op, b)
-        c = int(eval(a_op_b))
+        c = int(eval(a_op_b))  # Corect answer
 
         # Let user input answer
         try:
@@ -41,14 +42,14 @@ if __name__ == '__main__':
             ans = ''
 
         # To check if correct or not
-        if time.time() - start_time <= 60:
-            if c == ans:
-                print('Correct! Time remain {} seconds.'.format(int(60 - (time.time() - start_time))))
-                correct = correct + 1
-            else:
-                print('Wrong answer! Time remain {} seconds.'.format(int(60 - (time.time() - start_time))))
-            total = total + 1
+        if c == ans:
+            print('Correct! Time remain {} seconds.'.format(int(60 - (time.time() - start_time))))
+            correct = correct + 1
             questions.append('{}={}'.format(a_op_b, ans))
+        else:
+            print('Wrong answer! Time remain {} seconds.'.format(int(60 - (time.time() - start_time))))
+            questions.append('{}={}'.format(a_op_b, str(c)+'*'))
+        total = total + 1
 
     print('{} questions and your correct rate is {:.2f}%'.format(total, correct / total * 100))
     for q in questions:

@@ -1,7 +1,7 @@
 import cv2
 from handUtils import HandDetector
 
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 hand_detector = HandDetector()
 
 while True:

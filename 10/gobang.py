@@ -4,40 +4,45 @@ win = False
 
 speed(0)
 bgcolor("lightgreen")
-yanse="black"
-gz=40
+screen = Screen()
+screen.setup(width=1.0, height=1.0)  # full screen
+yanse="black"  # Current player. Black move first.
+cell_size=40
 
 judge = Turtle()
 judge.up()
-judge.goto(-460, 330)
+judge.goto(-480, 330)
 judge.write("Next", font=("Arial", 40, "bold"))
 judge.color(yanse)
 judge.goto(-420, 300)
 judge.dot(30)
 
+# Draw horisontal lines.
 for i in range(19):
     up()
-    goto(-gz*9, gz*(9-i))
+    goto(-cell_size*9, cell_size*(9-i))
     down()
-    fd(gz*18)
-    bk(gz*18)
+    fd(cell_size*18)
+    bk(cell_size*18)
 
 rt(90)
 
+# Draw vertical lines.
 for i in range(19):
     up()
-    goto(-gz*(9-i), gz*9)
+    goto(-cell_size*(9-i), cell_size*9)
     down()
-    fd(gz*18)
-    bk(gz*18)
+    fd(cell_size*18)
+    bk(cell_size*18)
 
+# Draw borders
 pensize(5)
 for i in range(4):
-    fd(gz*18)
+    fd(cell_size*18)
     rt(90)
 
-# m = [[0] * 19 for i in range(19)]
-m =[
+# board = [[0] * 19 for i in range(19)]
+board =[
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -59,21 +64,26 @@ m =[
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 ]
 
-def check(i, j):
+def check(row, col):
+    """
+    Gomoku (Five-in-a-row) win check
+    """
     global win
-    g = [0] * 8
-    fw = ((0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1))
+    counts = [0] * 8
+    # →  ↘  ↓  ↙  ←  ↖  ↑  ↗
+    directions = ((0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1))
+
     for index in range(8):
-        d = fw[index]
-        next_i = i + d[0]
-        next_j = j + d[1]
-        while next_i in range(19) and next_j in range(19) and m[next_i][next_j] == m[i][j]:
-            g[index] = g[index] + 1
-            next_i = next_i + d[0]
-            next_j = next_j + d[1]
+        direction = directions[index]
+        next_row = row + direction[0]
+        next_col = col + direction[1]
+        while next_row in range(19) and next_col in range(19) and board[next_row][next_col] == board[row][col]:
+            counts[index] = counts[index] + 1
+            next_row = next_row + direction[0]
+            next_col = next_col + direction[1]
 
     for index in range(4):
-        if g[index] + g[index + 4] + 1 >= 5:
+        if counts[index] + counts[index + 4] + 1 >= 5:
             win = True
             goto(0, 0)
             if yanse == "black":
@@ -83,28 +93,32 @@ def check(i, j):
             break
 
 def play(x, y):
+    """
+    Check click (x,y) coordinates calculate board position 
+    draw rock in position and add it to board matrix.
+    """
     if not win:
         global yanse
-        global gz
+        global cell_size
         color(yanse)
         up()
-        x = round(x/gz)*gz
-        y = round(y/gz)*gz
-        i = int(9 - y / gz)
-        j = int(x / gz + 9)
+        x = round(x/cell_size)*cell_size
+        y = round(y/cell_size)*cell_size
+        row = int(9 - y / cell_size)
+        col = int(x / cell_size + 9)
 
-        if i >= 0 and i <= 18 and j >=0 and j<=18:
-            if m[i][j] == 0:
+        if row >= 0 and row <= 18 and col >=0 and col<=18:
+            if board[row][col] == 0:  # 1-black, 2-white, 0-empty
                 goto(x, y)
                 dot(30)
 
                 if yanse == "black":
-                    m[i][j] = 1
-                    check(i, j)
+                    board[row][col] = 1
+                    check(row, col)
                     yanse="white"
                 else:
-                    m[i][j] = 2
-                    check(i, j)
+                    board[row][col] = 2
+                    check(row, col)
                     yanse="black"
 
                 judge.color(yanse)

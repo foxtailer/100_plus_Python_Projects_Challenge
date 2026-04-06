@@ -1,7 +1,7 @@
-def f(s):
-    l = s.split(' ')
+def f(s:str):
+    blocks = s.split(' ')
     try:
-        a, op, b = int(l[0]), l[1], int(l[2])
+        a, op, b = int(blocks[0]), blocks[1], int(blocks[2])
     except ValueError:
         raise Exception('Error: Numbers must only contain digits.')
     if not (op == '+' or op == '-'):
@@ -19,13 +19,14 @@ def f(s):
     return r
 
 
-def arithmetic_arranger(problems, show_result=False):
+def arithmetic_arranger(problems:list, show_result=False):
     if len(problems) > 5:
         return 'Error: Too many problems.'
 
     arranged_problems = ''
     d = []
-    for problem in problems:
+
+    for problem in problems:  # Problem is a str like: "32 + 8"
         try:
             ps = f(problem)
             d.append(ps)

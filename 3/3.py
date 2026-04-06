@@ -17,7 +17,7 @@ def get_position(image_width, image_height, text_width, text_height, position_id
     :param margin: the text position margin value to the image
     :return: text position tuple
     '''
-    margin = 10
+
     if position_id == 1:
         return (margin, margin)
     elif position_id == 2:
