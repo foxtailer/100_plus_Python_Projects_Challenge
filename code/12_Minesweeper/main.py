@@ -30,9 +30,21 @@ judge.speed(0)
 # draw
 def draw():
     t.clear()
+
+    # --- draw gray background ---
+    t.up()
+    t.goto(-bc / 2, bc / 2)
+    t.color("gray")
+    t.begin_fill()
+
+    for i in range(4):
+        t.fd(bc)
+        t.rt(90)
+
+    t.end_fill()
+
     t.seth(0)
     t.color("black")
-    t.goto(-bc / 2, bc / 2)
     for i in range(n + 1):
         t.down()
         t.fd(bc)
@@ -47,6 +59,8 @@ def draw():
         t.bk(bc)
         t.up()
         t.goto(-bc / 2 + (i + 1) * gz, bc / 2)
+    t.goto(-bc / 2, bc / 2)
+    t.seth(0)
 
 
 # write the booms count
@@ -243,7 +257,7 @@ def mark(x, y):
 start()
 screen = Screen()
 screen.onscreenclick(click, 1)
-screen.onscreenclick(mark, 2)
+screen.onscreenclick(mark, 3)
 screen.onkey(start, "space")
 screen.listen()
 done()
